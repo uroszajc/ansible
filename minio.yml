@@ -1,0 +1,63 @@
+- name: Download and update Minio
+  hosts: minio
+  tasks:
+   - name: Download minio file
+     become: yes
+     get_url:
+      url: https://dl.min.io/server/minio/release/linux-amd64/minio
+      dest: /tmp/minio
+      mode: 0755
+      owner: minio
+
+
+   - name: Stop services if enabled
+     become: yes
+     shell: if systemctl is-enabled --quiet {{ item }}; then systemctl stop {{ item }} && echo stop_ok ; fi
+     register: output
+     changed_when:  "'stop_ok' in output.stdout"
+     loop:
+      - minio
+      - minio-ada
+      - minio-aimdental
+      - minio-bailyfl
+      - minio-gardiner
+      - minio-greenstone
+      - minio-maneliquor
+      - minio-ourladyog
+      - minio-qias
+      - minio-sondergaard
+      - minio-spacebar
+      - minio-tts
+      - minio-win7
+
+
+   - name: copy Minio binaries
+     become: yes
+     copy: 
+      src: /tmp/minio
+      dest: /usr/local/bin/minio
+      mode: 0755
+      remote_src: yes
+      backup: yes
+      
+
+   - name: Start services
+     become: yes
+     shell: if systemctl is-enabled --quiet {{ item }}; then systemctl start {{ item }} && echo start_ok ; fi
+     register: output
+     changed_when:  "'start_ok' in output.stdout"
+     loop:
+      - minio
+      - minio-ada
+      - minio-aimdental
+      - minio-bailyfl
+      - minio-gardiner
+      - minio-greenstone
+      - minio-maneliquor
+      - minio-ourladyog
+      - minio-qias
+      - minio-sondergaard
+      - minio-spacebar
+      - minio-tts
+      - minio-win7
+

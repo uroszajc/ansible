@@ -1,0 +1,8 @@
+
+- name: Start vms
+  hosts: 192.168.83.3
+  tasks:
+  - name: Start minio
+    community.libvirt.virt: 
+     name: minio
+     state: running

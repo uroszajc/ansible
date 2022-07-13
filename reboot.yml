@@ -1,0 +1,9 @@
+- name: Reboot the machine
+  hosts: minio
+  gather_facts: no
+  become: true
+
+  tasks:
+   - name: reboot and wait
+     reboot:
+      reboot_timeout: 300

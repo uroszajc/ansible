@@ -1,0 +1,9 @@
+- name: Reboot all servers at once
+  hosts: 192.168.122.240
+  gather_facts: no
+  become: true
+
+  tasks:
+   - name: reboot and wait
+     reboot:
+      reboot_timeout: 300
