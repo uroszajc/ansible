@@ -20,4 +20,4 @@
       Mdadm status:
       {{ md_status }}
     delegate_to: 127.0.0.1
-    when: '"/dev/md0" in md_status'
+    when: '"FAILURE" in md_status'
