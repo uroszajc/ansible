@@ -1,6 +1,6 @@
 ---
 - name: Update APT cache
-  hosts: downloader
+  hosts: all
   become: yes
   tasks:
     - name: Apt Cache Stuff
