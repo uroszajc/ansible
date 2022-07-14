@@ -1,5 +1,6 @@
 - name: Get mdadm status and send an email
   hosts: all
+  module: community.general.mail
   tasks:
   - name: MDADM checks
     become: yes
@@ -9,7 +10,7 @@
 
   - name: Send an email if there is a failure registered
     mail:
-     host: 127.0.0.1
+     host: 192.168.83.3
      port: 25
      to: uzajc@hotmail.com
      from: mrszajc@bigpond.com
@@ -18,5 +19,5 @@
       This is an ansible test email from {{ ansible_hostname }}
       Mdadm status:
       {{ md_status }}
-    delegate_to: localhost
-    when: '"FAILURE" in md_status'
+    delegate_to: 127.0.0.1
+    when: '"/dev/md0" in md_status'
