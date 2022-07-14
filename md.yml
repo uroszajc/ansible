@@ -1,6 +1,6 @@
 - name: Get mdadm status and send an email
   hosts: all
-  module: community.general.mail
+#  module: community.general.mail
   tasks:
   - name: MDADM checks
     become: yes
