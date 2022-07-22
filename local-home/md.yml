@@ -14,19 +14,11 @@
      port: 25
      to: uzajc@hotmail.com
      from: mrszajc@bigpond.com
-<<<<<<< HEAD
-     subject: Ansible Test
-=======
-     subject: Ansible MDADM Alert!!!
->>>>>>> d728b698c3ab46221d9863ea143c8e4fefbeedbb
+     subject: Ansible MDADM Alert
      body: |
-      This is an ansible test email from {{ ansible_hostname }}
+      This is an ansible MDADM email from {{ ansible_hostname }}
       Mdadm status:
       {{ md_status }}
-<<<<<<< HEAD
     delegate_to: localhost
     when: '"FAILURE" in md_status'
-=======
-    delegate_to: 127.0.0.1
-    when: '"FAILURE" in md_status'
->>>>>>> d728b698c3ab46221d9863ea143c8e4fefbeedbb
+
