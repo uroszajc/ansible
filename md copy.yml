@@ -16,8 +16,22 @@
      from: mrszajc@bigpond.com
      subject: Ansible MDADM Alert!!!
      body: |
-      This is an ansible test email from {{ ansible_hostname }}
+      This is an ansible failure email from {{ ansible_hostname }}
       Mdadm status:
       {{ md_status }}
     delegate_to: 127.0.0.1
     when: '"FAILURE" in md_status'
+
+  - name: Send an email if there is a degraded state registered
+    mail:
+     host: 192.168.83.3
+     port: 25
+     to: uzajc@hotmail.com
+     from: mrszajc@bigpond.com
+     subject: Ansible MDADM warning!!!
+     body: |
+      This is an ansible degraded email from {{ ansible_hostname }}
+      Mdadm status:
+      {{ md_status }}
+    delegate_to: 127.0.0.1
+    when: '"degraded" in md_status'
