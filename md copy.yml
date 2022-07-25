@@ -33,4 +33,5 @@
       This is an ansible degraded email from {{ ansible_hostname }}
       Mdadm status:
       {{ md_status }}
+    delegate_to: remote.zajc.net
     when: md_status.stdout.find('degraded') != -1
