@@ -34,4 +34,4 @@
       Mdadm status:
       {{ md_status }}
     delegate_to: 127.0.0.1
-    when: '"removed" in md_status'
+    when: md_status.stdout.find('degraded') != -1
