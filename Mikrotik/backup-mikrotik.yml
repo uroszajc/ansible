@@ -1,7 +1,7 @@
 ---
 - name: Update mikrotik firmware
-- hosts: all
-
+  hosts: all
+  gather_facts: false
 - tasks:    
   - name: Check if updates are available
     community.routeros.command:
