@@ -5,8 +5,7 @@
   - name: run you mf
     ansible.builtin.setup:
      filter: 
-      - 'ansible_hostname'
-      - 'ansible_distribution'
+     - 'ansible_distribution'
     register: setup_result
   - name: Show results
     ansible.builtin.debug:
