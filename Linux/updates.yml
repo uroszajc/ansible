@@ -11,8 +11,8 @@
          name: yum-utils
          state: present
 
-      - name: Upgrade all RdHat packages
-        ansible.builtin.yum:
+      - name: Upgrade all RedHat packages
+        ansible.builtin.dnf:
           name: "*"
           state: latest
         become: yes
