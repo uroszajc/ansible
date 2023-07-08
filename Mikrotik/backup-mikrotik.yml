@@ -10,9 +10,10 @@
     community.routeros.command:
       commands: 'system/package/update/check-for-updates'
     register: update_check
-  - name: show Results  
+  - name: show Results
     ansible.builtin.debug:
      var: update_check
+    delegate_to: localhost
 
 
 #   - name: email the Boss
