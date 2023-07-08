@@ -7,10 +7,6 @@
      filter: 
       - 'ansible_hostname'
       - 'ansible_distribution'
-      - 'all_ipv4_addresses'
-      - 'distribution'
-      - 'os_family'
-      - 'platform'
     register: setup_result
   - name: Show results
     ansible.builtin.debug:
