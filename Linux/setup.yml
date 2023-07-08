@@ -1,0 +1,8 @@
+---
+- name: run Ansible setup module and display output
+  hosts: all
+  tasks:
+  - name: run you mf
+    ansible.builtin.setup:
+     filter: ansible_hostname
+    register: setup_result
