@@ -1,6 +1,6 @@
 ---
 - name: Update mikrotik firmware
-- hosts: mikrotik
+- hosts: all
 
 - tasks:    
   - name: Check if updates are available
