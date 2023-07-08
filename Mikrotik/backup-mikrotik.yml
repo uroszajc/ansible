@@ -34,4 +34,4 @@
       Update check post pre-run:
       {{ update_check_post }}
     delegate_to: 127.0.0.1
-    when: "New version is available" in 'update_check'
+    when: '"New version is available" in update_check'
