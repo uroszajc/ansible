@@ -1,66 +1,37 @@
-- name: update and Upgrade
-  hosts: all
-  become: yes
-
+---
+- hosts: yum
   tasks:
-  - name: RHEL-Type updates
-    block: 
-      - name: Make sure yum-utils are installed
-        become: yes
-        ansible.builtin.dnf:
-         name: yum-utils
-         state: present
+  - name: Update all installed packages using YUM module
+    yum:
+      name: '*'
+      state: latest
+      update_cache: yes
+      update_only: yes
+    register: yum_update_status
 
-      - name: Upgrade all RedHat packages
-        ansible.builtin.dnf:
-          name: "*"
-          state: latest
-        become: yes
+  - name: Remove packates not needed anymore
+    yum:
+      autoremove: yes
 
-      - name: check if reboot required
-        become: yes
-        ansible.builtin.command: "/usr/bin/dnf needs-restarting -r"
-        register: reboot_needed
-        ignore_errors: True
-    
-      - name: Update required status output
-        debug:
-          var: reboot_needed.stdout_lines
+  - name: Reboot when packages were updated
+    reboot:
+    when: yum_update_status.changed
 
-       #add some check for reboot stuff 
-      - name: Reboot if updates require it
-        become: yes
-        ansible.builtin.reboot:
-          reboot_timeout: 3600
-        when: reboot_needed.stdout.find('Reboot is required') != -1
-        
-    when: ansible_distribution_file_path == "/etc/redhat-release"
-  - name: Ubuntu Update - Stuff
-    block:
-      - name: Ubuntu update stuff
-        apt:
-          update_cache: yes
-          cache_valid_time: 3600
+- hosts: apt
+  tasks:
+  - name: Update all installed packages using APT module
+    apt:
+      name: '*'
+      state: latest
+      update_cache: yes
+      only_upgrade: yes
+    register: apt_update_status
 
-      - name: Remove dependencies that are no longer required - First Run
-        apt:
-          autoremove: yes
-      - name: Apt-get upgrade
-        apt:
-          upgrade: yes
-      - name: Remove dependencies that are no longer required - Second Run
-        apt:
-          autoremove: yes
-        
-      - name: Check if a reboot is required
-        stat: path=/var/run/reboot-required get_md5=no
-        register: reboot_flag
+  - name: Remove packages not needed anymore
+    apt:
+      autoremove: yes
 
-      - name: Reboot the server is needed
-        reboot:
-          reboot_timeout: 300
-        when: reboot_flag.stat.exists == true
-
-      - debug:
-          msg: "Server is back up and running"
-    when: ansible_facts['os_family'] == 'Debian'
+  - name: Reboot when packages were updated
+    reboot:
+      post_reboot_delay: 60
+    when: apt_update_status.changed
