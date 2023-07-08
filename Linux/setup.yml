@@ -4,7 +4,13 @@
   tasks:
   - name: run you mf
     ansible.builtin.setup:
-#     filter: ansible_hostname
+     filter: 
+      - 'ansible_hostname'
+      - 'ansible_distribution'
+      - 'all_ipv4_addresses'
+      - 'distribution'
+      - 'os_family'
+      - 'platform'
     register: setup_result
   - name: Show results
     ansible.builtin.debug:
