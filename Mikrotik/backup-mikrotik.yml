@@ -1,25 +1,12 @@
 ---
 - name: Update mikrotik firmware
-  hosts: all
+  hosts: mikrotik
   gather_facts: false
 - tasks:    
   - name: Check if updates are available
     community.routeros.command:
       commands: 'system/package/update/check-for-updates'
     register: update_check
-
-  #- name: backup router configuration
-
-  # - name: Perform router update
-  #   community.routeros.command:
-  #     commands: 'system/package/update/ install'
-  #   when: update_check.stdout.find('New version is available') != -1
-  # - name: Do i have to restart router?
-  # - name: wait for router to be online
-  # - name: Check for udpates again
-  #   community.routeros.command:
-  #     commands: 'system/package/update/check-for-updates'wait_for:
-  #   register: update_check_post
   - name: email the Boss
     community.general.mail:
      host: 192.168.83.3
@@ -35,3 +22,19 @@
       {{ update_check_post }}
     delegate_to: 127.0.0.1
     when: '"New version is available" in update_check'
+
+
+
+
+  #- name: backup router configuration
+
+  # - name: Perform router update
+  #   community.routeros.command:
+  #     commands: 'system/package/update/ install'
+  #   when: update_check.stdout.find('New version is available') != -1
+  # - name: Do i have to restart router?
+  # - name: wait for router to be online
+  # - name: Check for udpates again
+  #   community.routeros.command:
+  #     commands: 'system/package/update/check-for-updates'wait_for:
+  #   register: update_check_post
