@@ -10,20 +10,25 @@
     community.routeros.command:
       commands: 'system/package/update/check-for-updates'
     register: update_check
-  - name: email the Boss
-    community.general.mail:
-     host: 192.168.83.3
-     port: 25
-     to: uzajc@hotmail.com
-     from: mrszajc@bigpond.com
-     subject: Mikrotik Update Notice
-     body: |
-      This is an ansible generated email from Mikrotik update play
-      Update check pre-run:
-      {{ update_check }}
-      Update check post pre-run:
-#      {{ update_check_post }}
-    delegate_to: 127.0.0.1
+  - name: show Results  
+    ansible.builtin.debug:
+     var: update_check
+
+
+#   - name: email the Boss
+#     community.general.mail:
+#      host: 192.168.83.3
+#      port: 25
+#      to: uzajc@hotmail.com
+#      from: mrszajc@bigpond.com
+#      subject: Mikrotik Update Notice
+#      body: |
+#       This is an ansible generated email from Mikrotik update play
+#       Update check pre-run:
+#       {{ update_check }}
+#       Update check post pre-run:
+# #      {{ update_check_post }}
+#     delegate_to: 127.0.0.1
 #    when: '"New version is available" in update_check'
 
 
