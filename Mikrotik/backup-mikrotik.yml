@@ -3,10 +3,10 @@
 - hosts: mikrotik
 - ansible.builtin.gather_facts: no
 - tasks:    
- - name: Check if updates are available
-   community.routeros.command:
-     commands: 'system/package/update/check-for-updates'
-   register: update_check
+  - name: Check if updates are available
+    community.routeros.command:
+      commands: 'system/package/update/check-for-updates'
+    register: update_check
 
   #- name: backup router configuration
 
