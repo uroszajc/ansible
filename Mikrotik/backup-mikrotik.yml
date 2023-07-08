@@ -1,7 +1,7 @@
 ---
 - name: Update mikrotik firmware
 - hosts: mikrotik
-- ansible.builtin.gather_facts: no
+
 - tasks:    
   - name: Check if updates are available
     community.routeros.command:
