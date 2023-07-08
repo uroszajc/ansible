@@ -1,0 +1,8 @@
+---
+- name: uppdate-ssh
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Write the new ssh keys known hosts
+    connection: local
+    shell: "ssh-keyscan -H {{ inventory_hostname }} > ~/.ssh/known_hosts"
