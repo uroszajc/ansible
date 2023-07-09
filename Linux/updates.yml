@@ -19,7 +19,7 @@
 #     reboot:
 #     when: yum_update_status.changed
 
-- hosts: nuc
+- hosts: hp
   become: yes
   tasks:
   - name: update cache
