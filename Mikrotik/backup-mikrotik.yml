@@ -6,6 +6,7 @@
   - name: Write the new ssh keys known hosts
     connection: local
     shell: "ssh-keyscan -H {{ inventory_hostname }} >> ~/.ssh/known_hosts"
+  delegate_to: localhost
   - name: Check if updates are available
     community.routeros.command:
       commands: 'system/package/update/check-for-updates'
@@ -13,9 +14,6 @@
   - name: show Results
     ansible.builtin.debug:
      var: update_check
-    delegate_to: localhost
-
-
 #   - name: email the Boss
 #     community.general.mail:
 #      host: 192.168.83.3
