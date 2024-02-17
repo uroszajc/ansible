@@ -3,7 +3,7 @@
   hosts: mikrotik
   gather_facts: false
   vars:
-  backup_dir: "/home/uzajc/ansible/backup"
+   backup_dir: "/home/uzajc/ansible/backup"
   tasks:
 #  - name: Write the new ssh keys known hosts
 #    connection: local
