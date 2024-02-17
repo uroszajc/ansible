@@ -2,6 +2,8 @@
 - name: Update mikrotik firmware
   hosts: mikrotik
   gather_facts: false
+  vars:
+  backup_dir: "/home/uzajc/ansible/backup"
   tasks:
 #  - name: Write the new ssh keys known hosts
 #    connection: local
@@ -24,20 +26,24 @@
 #    when: '"New version is available" in update_check'
     when: update_check.stdout is search('New version is available')
 
-#   - name: email the Boss
-#     community.general.mail:"#      host: 192.168.83.3
-#      port: 25
-#      to: uzajc@hotmail.com
-#      from: mrszajc@bigpond.com
-#      subject: Mikrotik Update Notice
-#      body: |
-#       This is an ansible generated email from Mikrotik update play
-#       Update check pre-run:
-#       {{ update_check }}
-#       Update check post pre-run:
-# #      {{ update_check_post }}
-#     delegate_to: 127.0.0.1
-#    when: '"New version is available" in update_check'
+  - name: Export
+     ansible.builtin.shell: >-
+               sshpass -p '{{ ansible_backup_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_backup_user }}@{{ ansible_host }} /export
+     register: export
+     delegate_to: 192.168.1.89
+      
+   - name: Create a directory if it does not exist
+     ansible.builtin.file:
+       path: "{{ backup_dir }}/{{ inventory_hostname }}" 
+       state: directory
+       mode: '0755'
+     delegate_to: localhost
+   - name: Backup
+     ansible.builtin.copy:
+       content: "{{ export.stdout }}"
+       dest: "{{ backup_dir }}/{{ inventory_hostname }}/{{ inventory_hostname }}_config.{{ lookup('pipe', 'date +%Y-%m-%d@%H:%M:%S') }}"
+     when: export is defined
+     delegate_to: localhost
 
 
 
