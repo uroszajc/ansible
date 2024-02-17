@@ -36,7 +36,7 @@
       url: "http://192.168.1.89:70/zajcnet-notif"
       method: POST
       body: "{{ ansible_hostname }} patched: \n {{ updates_needed.stdout_lines }}"
-    when: apt_update_status.changed
+  #  when: apt_update_status.changed
 
   - name: Reboot notice if needed
     uri:
