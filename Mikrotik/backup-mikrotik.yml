@@ -27,10 +27,12 @@
     when: update_check.stdout is search('New version is available')
 
   - name: Export
-     ansible.builtin.shell: >-
-               sshpass -p '{{ ansible_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_user }}@{{ ansible_host }} /export
+     community.routeros.command:
+      commands: 'system/package/update/check-for-updates'
+    # ansible.builtin.shell: >-
+    #           sshpass -p '{{ ansible_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_user }}@{{ ansible_host }} /export
      register: export
-     delegate_to: 192.168.1.89
+     #delegate_to: 192.168.1.89
       
    - name: Create a directory if it does not exist
      ansible.builtin.file:
