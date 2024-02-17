@@ -5,6 +5,12 @@
   - name: update cache
     ansible.builtin.apt:
      update_cache: yes
+     
+  - name: Inform what updates we have available
+    ansible.builtin.shell:
+     cmd:  apt list --upgradable -a
+    register: updates_needed
+     
   - name: Update all installed packages using APT module
     ansible.builtin.apt:
       name: '*'
@@ -29,7 +35,7 @@
     uri:
       url: "http://192.168.1.89:70/zajcnet-notif"
       method: POST
-      body: "{{ ansible_hostname }} patched: \n {{ apt_update_status.stdout_lines }}"
+      body: "{{ ansible_hostname }} patched: \n {{ updates_needed.stdout_lines }}"
     when: apt_update_status.changed
 
   - name: Reboot notice if needed
