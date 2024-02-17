@@ -28,7 +28,7 @@
 
   - name: Export
     community.routeros.command:
-     commands: 'export'
+     commands: '/export'
     # ansible.builtin.shell: >-
     #           sshpass -p '{{ ansible_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_user }}@{{ ansible_host }} /export
      register: export
