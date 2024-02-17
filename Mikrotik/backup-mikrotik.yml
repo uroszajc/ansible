@@ -28,7 +28,7 @@
 
   - name: Export
      ansible.builtin.shell: >-
-               sshpass -p '{{ ansible_backup_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_backup_user }}@{{ ansible_host }} /export
+               sshpass -p '{{ ansible_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_user }}@{{ ansible_host }} /export
      register: export
      delegate_to: 192.168.1.89
       
