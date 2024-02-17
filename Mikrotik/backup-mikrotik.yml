@@ -31,7 +31,7 @@
      commands: '/export'
     # ansible.builtin.shell: >-
     #           sshpass -p '{{ ansible_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_user }}@{{ ansible_host }} /export
-     register: export
+    register: export
      #delegate_to: 192.168.1.89
       
   - name: Create a directory if it does not exist
