@@ -20,7 +20,7 @@
     uri:
       url: "http://192.168.1.89:70/zajcnet-notif"
       method: POST
-      body: "{{ ansible_hostname }} needs update"
+      body: "{{ ansible_host }} needs update"
 #    when: '"New version is available" in update_check'
     when: update_check.stdout is search('New version is available')
 
