@@ -33,7 +33,8 @@
     #           sshpass -p '{{ ansible_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_user }}@{{ ansible_host }} /export
     register: export
      #delegate_to: 192.168.1.89
-      
+    when: update_check.stdout is search('New version is available')
+        
   - name: Create a directory if it does not exist
     ansible.builtin.file:
       path: "{{ backup_dir }}/{{ inventory_hostname }}" 
@@ -46,8 +47,7 @@
       dest: "{{ backup_dir }}/{{ inventory_hostname }}/{{ inventory_hostname }}_config.{{ lookup('pipe', 'date +%Y-%m-%d@%H:%M:%S') }}"
     when: export is defined
     delegate_to: localhost
-
-
+    
 
   - name: Perform router update
     community.routeros.command:
