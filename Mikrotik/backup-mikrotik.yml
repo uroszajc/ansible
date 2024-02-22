@@ -49,18 +49,21 @@
 
 
 
-
-  #- name: backup router configuration
-
   - name: Perform router update
     community.routeros.command:
       commands: 'system/package/update/ install'
     when: update_check.stdout | join('') | regex_search('New version is available')
+    
+  - name: Wait for host to come back online
+    wait_for_connection:
+      delay: 30
+      timeout: 300
+    
+#   - name: Inform version
+#     uri:
+#       url: "http://192.168.1.89:70/zajcnet-notif"
+#       method: POST
+#       body: "{{ ansible_host }} needs update"
+# #    when: '"New version is available" in update_check'
+#     when: update_check.stdout is search('New version is available')
 
-#    when: update_check.stdout.find('New version is available') != -1
-  # - name: Do i have to restart router?
-  # - name: wait for router to be online
-  # - name: Check for udpates again
-  #   community.routeros.command:
-  #     commands: 'system/package/update/check-for-updates'wait_for:
-  #   register: update_check_post
