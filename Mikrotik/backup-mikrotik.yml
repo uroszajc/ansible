@@ -52,10 +52,10 @@
 
   #- name: backup router configuration
 
-  # - name: Perform router update
-  #   community.routeros.command:
-  #     commands: 'system/package/update/ install'
-  #   when: update_check.stdout.find('New version is available') != -1
+   - name: Perform router update
+     community.routeros.command:
+       commands: 'system/package/update/ install'
+     when: update_check.stdout.find('New version is available') != -1
   # - name: Do i have to restart router?
   # - name: wait for router to be online
   # - name: Check for udpates again
