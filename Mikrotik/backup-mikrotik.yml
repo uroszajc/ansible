@@ -55,7 +55,7 @@
   - name: Perform router update
     community.routeros.command:
       commands: 'system/package/update/ install'
-    when: update_check.stdout | join('').find('New version is available') != -1
+    when: update_check.stdout | join('') | regex_search('New version is available')
 
 #    when: update_check.stdout.find('New version is available') != -1
   # - name: Do i have to restart router?
