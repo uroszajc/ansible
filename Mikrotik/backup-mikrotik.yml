@@ -49,15 +49,15 @@
     delegate_to: localhost
     
 
-  - name: Perform router update
-    community.routeros.command:
-      commands: 'system/package/update/ install'
-    when: update_check.stdout | join('') | regex_search('New version is available')
+  # - name: Perform router update
+  #   community.routeros.command:
+  #     commands: 'system/package/update/ install'
+  #   when: update_check.stdout | join('') | regex_search('New version is available')
     
-  - name: Wait for host to come back online
-    wait_for_connection:
-      delay: 30
-      timeout: 300
+  # - name: Wait for host to come back online
+  #   wait_for_connection:
+  #     delay: 30
+  #     timeout: 300
     
 #   - name: Inform version
 #     uri:
