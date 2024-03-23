@@ -5,42 +5,7 @@
   vars:
    backup_dir: "/home/uzajc/ansible/backup"
   tasks:
-#  - name: Write the new ssh keys known hosts
-#    connection: local
-#    shell: "ssh-keyscan -H {{ inventory_hostname }} >> /tmp/semaphore/.ssh/known_hosts"
-#    delegate_to: localhost
 
-  - name: Check if updates are available
-    community.routeros.command:
-      commands: 'system/package/update/check-for-updates'
-    register: update_check
-  - name: show Results
-    ansible.builtin.debug:
-     var: update_check
-
-  - name: Inform Theres  an update
-    uri:
-      url: "http://192.168.1.89:70/zajcnet-notif"
-      method: POST
-      body: "{{ ansible_host }} needs update"
-#    when: '"New version is available" in update_check'
-    when: update_check.stdout is search('New version is available')
-
-  - name: Export
-    community.routeros.command:
-     commands: '/export'
-    # ansible.builtin.shell: >-
-    #           sshpass -p '{{ ansible_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_user }}@{{ ansible_host }} /export
-    register: export
-     #delegate_to: 192.168.1.89
-    when: update_check.stdout is search('New version is available')
-        
-  - name: Create a directory if it does not exist
-    ansible.builtin.file:
-      path: "{{ backup_dir }}/{{ inventory_hostname }}" 
-      state: directory
-      mode: '0755'
-    delegate_to: localhost
   - name: Backup
     ansible.builtin.copy:
       content: "{{ export.stdout }}"
@@ -49,21 +14,16 @@
     delegate_to: localhost
     
 
-  # - name: Perform router update
-  #   community.routeros.command:
-  #     commands: 'system/package/update/ install'
-  #   when: update_check.stdout | join('') | regex_search('New version is available')
+  - name: Wait for host to come back online
+    wait_for_connection:
+      delay: 30
+      timeout: 300
     
-  # - name: Wait for host to come back online
-  #   wait_for_connection:
-  #     delay: 30
-  #     timeout: 300
-    
-#   - name: Inform version
-#     uri:
-#       url: "http://192.168.1.89:70/zajcnet-notif"
-#       method: POST
-#       body: "{{ ansible_host }} needs update"
-# #    when: '"New version is available" in update_check'
-#     when: update_check.stdout is search('New version is available')
+  - name: Inform version
+    uri:
+      url: "http://192.168.1.89:70/zajcnet-notif"
+      method: POST
+      body: "{{ ansible_host }} updated"
+#    when: '"New version is available" in update_check'
+    # when: update_check.stdout is search('New version is available')
 
