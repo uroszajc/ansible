@@ -28,13 +28,13 @@
       delay: 30
       timeout: 300
       
-  # - name: Update Router Firmware
-  #   community.routeros.command:
-  #    commands: '/system routerboard upgrade'
+  - name: Update Router Firmware
+    community.routeros.command:
+     commands: ' :execute {/system/routerboard/upgrade}'
 
-  # - name: Reboot Router
-  #   community.routeros.command:
-  #    commands: '/system routerboard upgrade'
+  - name: Reboot Router
+    community.routeros.command:
+     commands: ':execute {/system reboot}'
 
   - name: Wait for host to come back online
     wait_for_connection:
