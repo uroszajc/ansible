@@ -18,20 +18,23 @@
       dest: "{{ backup_dir }}/{{ inventory_hostname }}/{{ inventory_hostname }}_config.{{ lookup('pipe', 'date +%Y-%m-%d@%H:%M:%S') }}"
     delegate_to: localhost
 
-  # - name: Update Router OS
-  #   community.routeros.command:
-  #    commands: '/system package update install'
+  - name: Update Router OS
+    community.routeros.command:
+     commands: '/system package update install'
        
 
-  # - name: Wait for host to come back online
-  #   wait_for_connection:
-  #     delay: 30
-  #     timeout: 300
+  - name: Wait for host to come back online
+    wait_for_connection:
+      delay: 30
+      timeout: 300
       
-  - name: Update Router Firmware
-    community.routeros.command:
-     commands: '/system routerboard upgrade'
-       
+  # - name: Update Router Firmware
+  #   community.routeros.command:
+  #    commands: '/system routerboard upgrade'
+
+  # - name: Reboot Router
+  #   community.routeros.command:
+  #    commands: '/system routerboard upgrade'
 
   - name: Wait for host to come back online
     wait_for_connection:
