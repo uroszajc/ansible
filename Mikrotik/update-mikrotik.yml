@@ -5,7 +5,13 @@
   vars:
    backup_dir: "/home/uzajc/ansible/backup"
   tasks:
-
+  - name: Export
+    community.routeros.command:
+     commands: '/export'
+    register: export
+     delegate_to: localhost
+    when: update_check.stdout is search('New version is available')
+    
   - name: Backup
     ansible.builtin.copy:
       content: "{{ export.stdout }}"
