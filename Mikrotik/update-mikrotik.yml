@@ -28,7 +28,7 @@
   #     delay: 30
   #     timeout: 300
       
-     - name: Update Router Firmware
+  - name: Update Router Firmware
     community.routeros.command:
      commands: '/system routerboard upgrade'
        
