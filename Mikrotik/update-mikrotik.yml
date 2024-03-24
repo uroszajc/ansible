@@ -6,40 +6,40 @@
    backup_dir: "/home/uzajc/ansible/backup"
   tasks:
   
-  # - name: Export
-  #   community.routeros.command:
-  #    commands: '/export'
-  #   register: export
+  - name: Export
+    community.routeros.command:
+     commands: '/export'
+    register: export
 
     
-  # - name: Backup
-  #   ansible.builtin.copy:
-  #     content: "{{ export.stdout }}"
-  #     dest: "{{ backup_dir }}/{{ inventory_hostname }}/{{ inventory_hostname }}_config.{{ lookup('pipe', 'date +%Y-%m-%d@%H:%M:%S') }}"
-  #   delegate_to: localhost
+  - name: Backup
+    ansible.builtin.copy:
+      content: "{{ export.stdout }}"
+      dest: "{{ backup_dir }}/{{ inventory_hostname }}/{{ inventory_hostname }}_config.{{ lookup('pipe', 'date +%Y-%m-%d@%H:%M:%S') }}"
+    delegate_to: localhost
 
-  # - name: Update Router OS
-  #   community.routeros.command:
-  #    commands: '/system package update install'
+  - name: Update Router OS
+    community.routeros.command:
+     commands: '/system package update install'
        
 
-  # - name: Wait for host to come back online
-  #   wait_for_connection:
-  #     delay: 30
-  #     timeout: 300
+  - name: Wait for host to come back online
+    wait_for_connection:
+      delay: 30
+      timeout: 300
       
-  # - name: Update Router Firmware
-  #   community.routeros.command:
-  #    commands: ' :execute {/system/routerboard/upgrade}'
+  - name: Update Router Firmware
+    community.routeros.command:
+     commands: ' :execute {/system/routerboard/upgrade}'
 
-  # - name: Reboot Router
-  #   community.routeros.command:
-  #    commands: ':execute {/system reboot}'
+  - name: Reboot Router
+    community.routeros.command:
+     commands: ':execute {/system reboot}'
 
-  # - name: Wait for host to come back online
-  #   wait_for_connection:
-  #     delay: 30
-  #     timeout: 300 
+  - name: Wait for host to come back online
+    wait_for_connection:
+      delay: 30
+      timeout: 300 
   - name: capture results
     community.routeros.command:
      commands: 'system/package/update/check-for-updates'
