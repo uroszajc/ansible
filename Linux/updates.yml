@@ -1,41 +1,104 @@
 ---
-# - hosts: yum
-#   become: yes
-
-#   tasks:
-#   - name: Update all installed packages using YUM module
-#     yum:
-#       name: '*'
-#       state: latest
-#       update_cache: yes
-#       update_only: yes
-#     register: yum_update_status
-
-#   - name: Remove packates not needed anymore
-#     yum:
-#       autoremove: yes
-
-#   - name: Reboot when packages were updated
-#     reboot:
-#     when: yum_update_status.changed
-
-- hosts: hp
+- name: Update servers
+  hosts: all
   become: yes
   tasks:
-  - name: update cache
+    # Update cache for Ubuntu servers
+  - name: Update cache for Ubuntu servers
     ansible.builtin.apt:
-     update_cache: yes
-  - name: Update all installed packages using APT module
+      update_cache: yes
+    when: ansible_os_family == 'Debian'
+     
+    # Update cache for RHEL 9 servers
+  - name: Update cache for RHEL 9 servers
+    ansible.builtin.dnf:
+      update_cache: yes
+    when: ansible_os_family == 'RedHat'
+
+    # Check for available updates for Ubuntu servers
+  - name: Inform what updates are available for Ubuntu servers
+    ansible.builtin.shell:
+      cmd: apt list --upgradable -a
+    register: updates_needed
+    when: ansible_os_family == 'Debian'
+
+    # Check for available updates for RHEL 9 servers
+  - name: Inform what updates are available for RHEL 9 servers
+    ansible.builtin.shell:
+      cmd: dnf list updates
+    register: updates_needed
+    when: ansible_os_family == 'RedHat'
+     
+    # Update all installed packages for Ubuntu servers
+  - name: Update all installed packages for Ubuntu servers
     ansible.builtin.apt:
       name: '*'
       state: latest
     register: apt_update_status
+    when: ansible_os_family == 'Debian'
 
-  - name: Remove packages not needed anymore
+    # Update all installed packages for RHEL 9 servers
+  - name: Update all installed packages for RHEL 9 servers
+    ansible.builtin.dnf:
+      name: '*'
+      state: latest
+    register: dnf_update_status
+    when: ansible_os_family == 'RedHat'
+
+    # Remove packages not needed anymore for Ubuntu servers
+  - name: Remove packages not needed anymore for Ubuntu servers
     ansible.builtin.apt:
       autoremove: yes
+    when: ansible_os_family == 'Debian'
 
-  - name: Reboot when packages were updated
-    reboot:
-      post_reboot_delay: 60
-    when: apt_update_status.changed
+    # Remove packages not needed anymore for RHEL 9 servers
+  - name: Remove packages not needed anymore for RHEL 9 servers
+    ansible.builtin.dnf:
+      autoremove: yes
+    when: ansible_os_family == 'RedHat'
+
+    # Check if a reboot is required for Ubuntu servers
+  - name: Check if a reboot is required for Ubuntu servers
+    ansible.builtin.stat:
+      path: /var/run/reboot-required
+    register: reboot_flag
+    when: ansible_os_family == 'Debian'
+
+    # Check if a reboot is required for RHEL 9 servers
+  - name: Check if a reboot is required for RHEL 9 servers
+    ansible.builtin.shell:
+      cmd: test -f /var/run/reboot-required
+    register: reboot_flag
+    when: ansible_os_family == 'RedHat'
+
+    # Inform it's done for Ubuntu servers
+  - name: Inform it's done for Ubuntu servers
+    ansible.builtin.uri:
+      url: "http://192.168.1.89:70/zajcnet-notif"
+      method: POST
+      body: "{{ ansible_hostname }} patched: \n {{ updates_needed.stdout_lines }}"
+    when: apt_update_status.changed and ansible_os_family == 'Debian'
+
+    # Inform it's done for RHEL 9 servers
+  - name: Inform it's done for RHEL 9 servers
+    ansible.builtin.uri:
+      url: "http://192.168.1.89:70/zajcnet-notif"
+      method: POST
+      body: "{{ ansible_hostname }} patched: \n {{ updates_needed.stdout_lines }}"
+    when: dnf_update_status.changed and ansible_os_family == 'RedHat'
+
+    # Reboot notice if needed for Ubuntu servers
+  - name: Reboot notice if needed for Ubuntu servers
+    ansible.builtin.uri:
+      url: "http://192.168.1.89:70/zajcnet-notif"
+      method: POST
+      body: "{{ ansible_hostname }} needs a reboot mate"
+    when: reboot_flag.stat.exists and ansible_os_family == 'Debian'
+
+    # Reboot notice if needed for RHEL 9 servers
+  - name: Reboot notice if needed for RHEL 9 servers
+    ansible.builtin.uri:
+      url: "http://192.168.1.89:70/zajcnet-notif"
+      method: POST
+      body: "{{ ansible_hostname }} needs a reboot mate"
+    when: reboot_flag.rc == 0 and ansible_os_family == 'RedHat'
