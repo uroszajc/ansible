@@ -7,5 +7,5 @@
       containers: true
       images: true
       networks: true
-      volumes: true
+#      volumes: true
       builder_cache: true
