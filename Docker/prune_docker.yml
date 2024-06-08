@@ -1,0 +1,13 @@
+---
+- name: run Ansible setup module and display output
+  hosts: hp
+  tasks:
+  - name: Prune everything (including non-dangling images)
+    community.docker.docker_prune:
+      containers: true
+      conatiners_filters:
+        dangling: true
+      images: true
+      images_filters:
+        dangling: true
+      builder_cache: true
