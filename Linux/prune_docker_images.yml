@@ -1,0 +1,12 @@
+---
+- name: run Ansible setup module and display output
+  hosts: all
+  tasks:
+  - name: prune unussed images
+    ansible.builtin.setup:
+    register: setup_result
+  - name: Show results
+    ansible.builtin.debug:
+     var: setup_result
+
+docker container prune
