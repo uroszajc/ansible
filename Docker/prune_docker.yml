@@ -5,8 +5,8 @@
   - name: Prune everything (including non-dangling images)
     community.docker.docker_prune:
       containers: true
-      containers_filters:
-        dangling: true
+#      containers_filters:
+#        dangling: true
       images: true
       images_filters:
         dangling: true
