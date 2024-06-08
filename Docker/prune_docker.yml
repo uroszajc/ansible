@@ -1,8 +1,8 @@
 ---
-- name: run Ansible setup module and display output
+- name: Docker prunning
   hosts: hp
   tasks:
-  - name: Prune everything (including non-dangling images)
+  - name: Prune containers and images
     community.docker.docker_prune:
       containers: true
 #      containers_filters:
