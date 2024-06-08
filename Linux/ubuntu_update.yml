@@ -28,7 +28,7 @@
 
 
   - name: Check if a reboot is required
-    stat: path=/var/run/reboot-required get_md5=no
+    stat: path=/var/run/reboot-required #get_md5=no
     register: reboot_flag
 
   - name: Inform its done
