@@ -1,0 +1,24 @@
+---
+- hosts: rhel
+  become: yes
+  tasks:
+  - name: Apply updates using dnf module.
+    dnf:
+      name: '*'
+#      security: '{{ dnfupdate_security_only }}'
+      state: latest
+      update_cache: true
+      update_only: true
+    register: dnfupdate_status
+
+  - name: Remove packages not needed anymore
+    dnf:
+      autoremove: true
+
+
+  - name: Inform updates are done
+    uri:
+      url: "http://192.168.1.89:70/zajcnet-notif"
+      method: POST
+      body: "{{ ansible_hostname }} patched: \n {{ updates_needed.stdout_lines }}"
+    when: dnfupdate_status.changed
