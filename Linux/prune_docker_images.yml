@@ -1,12 +1,13 @@
 ---
 - name: run Ansible setup module and display output
-  hosts: all
+  hosts: hp
   tasks:
-  - name: prune unussed images
-    ansible.builtin.setup:
-    register: setup_result
-  - name: Show results
-    ansible.builtin.debug:
-     var: setup_result
-
-docker container prune
+  - name: Prune everything (including non-dangling images)
+    community.docker.docker_prune:
+      containers: true
+      conatiners_filters:
+        dangling: true
+      images: true
+      images_filters:
+        dangling: true
+      builder_cache: true
