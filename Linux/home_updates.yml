@@ -1,0 +1,4 @@
+---
+- import_playbook: redhat_update.yml
+- import_playbook: ubuntu_update.yml
+#- import_playbook: notifications....
