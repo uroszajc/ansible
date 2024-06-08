@@ -5,9 +5,7 @@
   - name: Prune containers and images
     community.docker.docker_prune:
       containers: true
-#      containers_filters:
-#        dangling: true
       images: true
-      images_filters:
-        dangling: true
+      networks: true
+      volumes: true
       builder_cache: true
