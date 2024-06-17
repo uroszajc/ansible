@@ -32,6 +32,6 @@
       url: "http://192.168.1.89:70/zajcnet-notif"
       method: POST
       body: "{{ ansible_hostname }} patched: \n {{ dnfupdate_status.stdout_lines }}"
-    when: when: "'Reboot is required' in needs-restarting.stdout"
+    when: "'Reboot is required' in needs-restarting.stdout"
 
 
