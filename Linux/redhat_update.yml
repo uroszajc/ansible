@@ -2,10 +2,24 @@
 - hosts: redhat
   become: yes
   tasks:
+
+  - name: Check packages to upgrade
+    dnf:
+      list: updates
+    register: packages
+
+  - name: Show packages to upgrade
+    debug:
+      msg: >-
+          {%- set output=[] -%}
+          {%- for p in packages.results -%}
+          {{ output.append('%-40s' % (p.name ~ '-' ~ p.version) ~ ' | repo: ' ~ p.repo) }}
+          {%- endfor -%}
+          {{ output }}
+
   - name: Apply updates using dnf module.
     dnf:
       name: '*'
-#      security: '{{ dnfupdate_security_only }}'
       state: latest
       update_cache: true
       update_only: true
@@ -27,13 +41,9 @@
     register: needs_restarting
     failed_when: false
 
-
-    
   - name: Inform updates are done
     uri:
       url: "http://192.168.1.89:70/zajcnet-notif"
       method: POST
       body: "{{ ansible_hostname }} patched: \n {{ dnfupdate_status.stdout_lines }}"
-    when: "'Reboot is required' in needs_restarting.stdout"
-
-
+    when: '"Reboot is required" in needs_restarting'
