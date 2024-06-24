@@ -45,7 +45,7 @@
     ansible.builtin.copy:
       content: "{{ export.stdout }}"
       dest: "{{ backup_dir }}/{{ inventory_hostname }}/{{ inventory_hostname }}_config.{{ lookup('pipe', 'date +%Y-%m-%d@%H:%M:%S') }}"
-    when: export is defined
+    when: update_check.stdout is search('New version is available')
     delegate_to: localhost
     
 
