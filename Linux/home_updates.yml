@@ -1,6 +1,6 @@
 ---
-- import_playbook: redhat_power_on.yml
+- import_playbook: redhat_power_on.yaml
 - import_playbook: redhat_update.yml
-- import_playbook: redhat_shutdown.yml
+- import_playbook: redhat_shutdown.yaml
 - import_playbook: ubuntu_update.yml
 #- import_playbook: notifications....
