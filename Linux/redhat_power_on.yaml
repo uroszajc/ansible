@@ -13,7 +13,6 @@
      - D8:9E:F3:48:4B:01
   - name: Now sit and wait
     ansible.builtin.wait_for_connection:
-     timeout: 900
 
 
   
