@@ -1,6 +1,7 @@
 ---
-- hosts: localhost
+- hosts: redhat
   become: yes
+  gather_facts: no
   tasks:
 
   - name: Send Magic!
@@ -10,5 +11,9 @@
     with_items:
      - 54:BF:64:5E:87:61
      - D8:9E:F3:48:4B:01
+  - name: Now sit and wait
+    ansible.builtin.wait_for_connection:
+     timeout: 900
+
 
   
