@@ -5,7 +5,7 @@
 
   - name: Send Magic!
     community.general.wakeonlan:
-     mac: {{ item }}
+     mac: "{{ item }}"
     delegate_to: localhost
     with_items:
      - 54:BF:64:5E:87:61
