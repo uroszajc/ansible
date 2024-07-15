@@ -1,0 +1,8 @@
+---
+- hosts: redhat
+  become: yes
+  tasks:
+
+- name: Shutting down in 15
+  community.general.shutdown:
+    delay: 15
