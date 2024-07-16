@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+
+  - name: Test reachability to redhat servers
+    ansible.netcommon.net_ping:
+      dest: ""{{ item }}"
+    with_items:
+      - rhel
+      - fedora
+    register: ping_result
+
+  - name: debug stuff
+    ansible.builtin.debug:
+      msg: System {{ item }} message {{ ping_result }}
+    ## when: ansible_default_ipv4.gateway is defined
+   
