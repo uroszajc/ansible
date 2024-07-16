@@ -5,6 +5,7 @@
         - wait_for_connection:
             sleep: 1
             timeout: 10
+          register: host_status
       rescue:
         - debug:
             msg: "{{ inventory_hostname }} not connected. End of host."
@@ -13,3 +14,4 @@
 
     - debug:
         msg: "{{ inventory_hostname }} is running"
+        var: host_status
