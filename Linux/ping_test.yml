@@ -1,20 +1,26 @@
 ---
-- name: Check if the host is online and run Wake-on-LAN if it's not
+- name: Check if the hosts are online and run Wake-on-LAN if they are not
   hosts: localhost
   gather_facts: no
+  vars:
+    hosts_to_check:
+      - name: rhel
+        ip: 192.168.1.133
+        mac: <rhel_mac_address>
+      - name: fedora
+        ip: 192.168.1.135
+        mac: <fedora_mac_address>
   tasks:
-    - name: Check if the host is online
+    - name: Check if the hosts are online
       wait_for:
-        host: "{{ item }}"
+        host: "{{ item.ip }}"
         port: 22
         timeout: 10
       register: result
-      with_items:
-        - rhel
-        - fedora
-    # debug: 
-    # var: result
+      loop: "{{ hosts_to_check }}"
+      ignore_errors: yes
 
-    # - name: Wake-on-LAN if the host is not online
-    #   when: result.failed
-    #   local_action: command wakeonlan {{ mac_address }}
+    - name: Wake-on-LAN if any host is not online
+      when: item.failed
+      local_action: command wakeonlan {{ item.item.mac }}
+      with_items: "{{ result.results }}"
