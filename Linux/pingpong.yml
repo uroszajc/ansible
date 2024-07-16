@@ -1,0 +1,36 @@
+---
+- hosts: redhat
+  gather_facts: no
+  vars:
+   hosts_to_check:
+    - name: rhel
+      ip: 192.168.1.133
+      mac: 54:BF:64:5E:87:61
+    - name: fedora
+      ip: 192.168.1.135
+      mac: D8:9E:F3:48:4B:01
+
+  tasks:
+  - name: Ping net1
+    shell:  |
+      ping -c3 " {{item.ip}} " >/dev/null
+      if [ $? -eq 0 ]
+      then
+        echo "ok"
+      else
+        echo "nok"
+      fi
+    ignore_errors: true
+    register: output
+    delegate_to: localhost
+
+  - name: Wake-on-LAN if any host is not online
+    when: item.failed
+    delegate_to: localhost
+    community.general.wakeonlan:
+       mac: "{{ item.item.mac }}"
+    with_items: "{{ result.results }}"
+      
+  - name: end playbook
+    meta: end_host
+    when: output.stdout == 'nok'
