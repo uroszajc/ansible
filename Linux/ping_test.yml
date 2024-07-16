@@ -6,10 +6,10 @@
     hosts_to_check:
       - name: rhel
         ip: 192.168.1.133
-        mac: <rhel_mac_address>
-      - name: fedora
+        mac: 54:BF:64:5E:87:61
+        - name: fedora
         ip: 192.168.1.135
-        mac: <fedora_mac_address>
+        mac: D8:9E:F3:48:4B:01
   tasks:
     - name: Check if the hosts are online
       wait_for:
@@ -22,5 +22,9 @@
 
     - name: Wake-on-LAN if any host is not online
       when: item.failed
-      local_action: command wakeonlan {{ item.item.mac }}
+      community.general.wakeonlan: {{ item.item.mac }}
       with_items: "{{ result.results }}"
+      delegate_to: localhost
+
+    - name: Now sit and wait
+      ansible.builtin.wait_for_connection:
