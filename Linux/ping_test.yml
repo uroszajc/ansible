@@ -5,12 +5,12 @@
 
   - name: Test reachability to redhat servers
     ansible.builtin.ping:
-      dest: "{{ item }}"
-    with_items:
-      - rhel
-      - fedora
+    #   dest: "{{ item }}"
+    # with_items:
+    #   - rhel
+    #   - fedora
     register: ping_result
-    delegate_to: localhost
+    #delegate_to: localhost
 
   - name: debug stuff
     ansible.builtin.debug:
