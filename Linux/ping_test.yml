@@ -9,7 +9,7 @@
     port: 22
     delay: 1
     timeout: 3
-  delegate_to: localhost
+  connection: local
   register: ping_result
   with_items:
     - rhel
