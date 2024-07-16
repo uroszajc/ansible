@@ -19,6 +19,8 @@
     with_items:
       - rhel
       - fedora
+    ignore_unreachable: true
+
     #delegate_to: localhost
   - name: debug stuff
     ansible.builtin.debug:
