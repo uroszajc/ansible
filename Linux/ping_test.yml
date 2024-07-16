@@ -22,10 +22,15 @@
 
     - name: Wake-on-LAN if any host is not online
       when: item.failed
-      community.general.wakeonlan:
-      mac: "{{ item.item.mac }}"
-      with_items: "{{ result.results }}"
       delegate_to: localhost
+      community.general.wakeonlan:
+        mac: "{{ item.item.mac }}"
+      with_items: "{{ result.results }}"
 
     - name: Now sit and wait
       ansible.builtin.wait_for_connection:
+        timeout: 300
+        delay: 10
+        host: "{{ item.item.ip }}"
+      with_items: "{{ result.results }}"
+      when: item.failed
