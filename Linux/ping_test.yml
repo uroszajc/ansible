@@ -11,7 +11,6 @@
   delegate_to: localhost
   register: ping_result
     #delegate_to: localhost
-
-  - name: debug stuff
-    ansible.builtin.debug:
-      var: ping_result
+- name: debug stuff
+  ansible.builtin.debug:
+    var: ping_result
