@@ -3,18 +3,18 @@
   gather_facts: no
   tasks:
 
-- name: verify connections on Red Hat servers
-  ansible.builtin.wait_for:
-    host: "{{ item }}"
-    port: 22
-    delay: 1
-    timeout: 3
-  connection: local
-  register: ping_result
-  with_items:
-    - rhel
-    - fedora
+  - name: verify connections on Red Hat servers
+    ansible.builtin.wait_for:
+      host: "{{ item }}"
+      port: 22
+      delay: 1
+      timeout: 3
+    connection: local
+    register: ping_result
+    with_items:
+      - rhel
+      - fedora
     #delegate_to: localhost
-- name: debug stuff
-  ansible.builtin.debug:
-    var: ping_result
+  - name: debug stuff
+    ansible.builtin.debug:
+      var: ping_result
