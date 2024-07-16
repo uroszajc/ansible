@@ -1,27 +1,15 @@
----
 - hosts: redhat
-  gather_facts: no
+  gather_facts: false
   tasks:
+    - block:
+        - wait_for_connection:
+            sleep: 1
+            timeout: 10
+      rescue:
+        - debug:
+            msg: "{{ inventory_hostname }} not connected. End of host."
+        - meta: clear_host_errors
+        - meta: end_host
 
-  - name: Check if host is accessible
-    run_once: true
-    shell: ping -c 1 -w 2 {{ item }} 2>&1 > /dev/null
-    register: online
-    delegate_to: localhost
-  # - name: verify connections on Red Hat servers
-  #   ansible.builtin.wait_for:
-  #     host: "{{ item }}"
-  #     port: 22
-  #     timeout: 3
-  #   connection: local
-  #   register: ping_result
-  #   delegate_to: localhost
-    with_items:
-      - rhel
-      - fedora
-    ignore_unreachable: true
-
-    #delegate_to: localhost
-  - name: debug stuff
-    ansible.builtin.debug:
-      var: online
+    - debug:
+        msg: "{{ inventory_hostname }} is running"
