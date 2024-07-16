@@ -12,8 +12,8 @@
       with_items:
         - rhel
         - fedora
-    debug: 
-    var: result
+    # debug: 
+    # var: result
 
     # - name: Wake-on-LAN if the host is not online
     #   when: result.failed
