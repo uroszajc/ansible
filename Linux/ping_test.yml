@@ -22,7 +22,7 @@
 
     - name: Wake-on-LAN if any host is not online
       when: item.failed
-      community.general.wakeonlan: {{ item.item.mac }}
+      community.general.wakeonlan: "{{ item.item.mac }}"
       with_items: "{{ result.results }}"
       delegate_to: localhost
 
