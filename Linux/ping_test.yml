@@ -4,12 +4,16 @@
   tasks:
 
 - name: verify connections on Red Hat servers
-  wait_for:
-    host: redhat
+  ansible.builtin.wait_for:
+    host: ""{{ item }}''
     port: 22
-    delay: 5
+    delay: 1
+    timeout: 3
   delegate_to: localhost
   register: ping_result
+  with_items:
+    - rhel
+    - fedora
     #delegate_to: localhost
 - name: debug stuff
   ansible.builtin.debug:
