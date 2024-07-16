@@ -3,13 +3,13 @@
   gather_facts: no
   tasks:
 
-  - name: Test reachability to redhat servers
-    ansible.builtin.ping:
-    #   dest: "{{ item }}"
-    # with_items:
-    #   - rhel
-    #   - fedora
-    register: ping_result
+- name: verify connections on Red Hat servers
+  wait_for:
+    host: redhat
+    port: 22
+    delay: 5
+  delegate_to: localhost
+  register: ping_result
     #delegate_to: localhost
 
   - name: debug stuff
