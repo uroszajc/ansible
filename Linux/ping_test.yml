@@ -13,5 +13,6 @@
         - meta: end_host
 
     - debug:
-        # msg: "{{ inventory_hostname }} is running"
+        msg: "{{ inventory_hostname }} is running"
+    - debug:
         var: host_status
