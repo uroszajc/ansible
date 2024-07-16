@@ -13,6 +13,4 @@
 
   - name: debug stuff
     ansible.builtin.debug:
-      msg: System {{ item }} message {{ ping_result }}
-    ## when: ansible_default_ipv4.gateway is defined
-   
+      var: ping_result
