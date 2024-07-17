@@ -1,5 +1,5 @@
 ---
-- name: run Ansible setup module and display output
+- name: Cleanup containers and stuff
   hosts: hp
   tasks:
   - name: Prune everything (including non-dangling images)
