@@ -1,0 +1,14 @@
+---
+- hosts: redhat
+  become: yes
+  gather_facts: no
+  tasks:
+
+  - name: Send Magic!
+    community.general.wakeonlan:
+     mac: "{{ item }}"
+    delegate_to: localhost
+    with_items:
+     - 54:BF:64:5E:87:61
+  - name: Now sit and wait
+    ansible.builtin.wait_for_connection:
