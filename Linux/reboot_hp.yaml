@@ -1,0 +1,8 @@
+---
+- name: Restart Linux server with delay
+  hosts: hp
+  become: true
+
+  tasks:
+    - name: Reboot the server after a 10-second delay
+      ansible.builtin.command: "shutdown -r"
