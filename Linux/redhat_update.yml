@@ -26,11 +26,11 @@
     register: dnfupdate_status
 
 
-  - name: Install the latest version of dnf utils
-    ansible.builtin.dnf:
-      name:
-      - dnf-utils
-      state: latest
+  # - name: Install the latest version of dnf utils
+  #   ansible.builtin.dnf:
+  #     name:
+  #     - dnf-utils
+  #     state: latest
 
   - name: Remove packages not needed anymore
     dnf:
@@ -46,4 +46,4 @@
       url: "http://192.168.1.89:70/zajcnet-notif"
       method: POST
       body: "{{ ansible_hostname }} patched: \n {{ dnfupdate_status.stdout_lines }}"
-    when: '"Reboot is required" in needs_restarting'
+    # when: '"Reboot is required" in needs_restarting'
