@@ -1,6 +1,8 @@
 ---
-- hosts: redhat
+##- hosts: redhat
+- hosts: rhel
   become: yes
+  
   tasks:
 
   # - name: Check packages to upgrade
