@@ -1,10 +1,8 @@
 ---
-- name: Start W11 VM
+- name: Start W11 VM using virsh
   hosts: localhost
   connection: local
-  become: true  # Optional: needed if libvirt requires root
+  become: true
   tasks:
-    - name: Start a virtual machine
-      community.libvirt.virt:
-        name: W11  # <-- replace with your actual VM name
-        state: running
+    - name: Start the VM with virsh
+      ansible.builtin.command: virsh start W11
