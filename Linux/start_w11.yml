@@ -2,7 +2,9 @@
 - name: Start W11 VM
   hosts: localhost
   connection: local
+  become: true  # Optional: needed if libvirt requires root
   tasks:
     - name: Start a virtual machine
       community.libvirt.virt:
-      state: running
+        name: W11  # <-- replace with your actual VM name
+        state: running
