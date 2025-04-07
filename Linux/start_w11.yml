@@ -1,0 +1,8 @@
+---
+- name: Start W11 VM
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Start a virtual machine
+      community.libvirt.virt:
+      state: running
