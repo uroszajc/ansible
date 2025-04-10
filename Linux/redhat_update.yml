@@ -5,19 +5,19 @@
   
   tasks:
 
-  # - name: Check packages to upgrade
-  #   dnf:
-  #     list: updates
-  #   register: packages
+  - name: Check packages to upgrade
+    dnf:
+     list: updates
+    register: packages
 
-  # - name: Show packages to upgrade
-  #   debug:
-  #     msg: >-
-  #         {%- set output=[] -%}
-  #         {%- for p in packages.results -%}
-  #         {{ output.append('%-40s' % (p.name ~ '-' ~ p.version) ~ ' | repo: ' ~ p.repo) }}
-  #         {%- endfor -%}
-  #         {{ output }}
+  - name: Show packages to upgrade
+    debug:
+      msg: >-
+        {% set output = [] %}
+        {% for p in packages.results %}
+        {{ output.append('%-40s | repo: %s' % (p.name ~ '-' ~ p.version, p.repo)) }}
+        {% endfor %}
+        {{ output }}
 
   - name: Apply updates using dnf module.
     dnf:
